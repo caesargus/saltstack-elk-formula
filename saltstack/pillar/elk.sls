@@ -40,7 +40,30 @@ elk:
     apt_source: http://packages.elastic.co/elasticsearch/2.x/debian
 
   logstash:
-    apt_source: http://packages.elastic.co/logstash/2.2/debian
+    documentation_source: https://www.elastic.co/guide/en/logstash/current/installing-logstash.html
+    apt:
+      apt_signing_key: wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+      apt_transport_https: sudo apt-get install apt-transport-https
+      repository_definition: echo "deb https://artifacts.elastic.co/packages/5.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-5.x.list
+      logstash_install: sudo apt-get update && sudo apt-get install logstash
+      apt_source: http://packages.elastic.co/logstash/2.2/debian
+    yum:
+      rpm_import: rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+      rpm_repo: |+
+        [logstash-5.x]
+        name=Elastic repository for 5.x packages
+        baseurl=https://artifacts.elastic.co/packages/5.x/yum
+        gpgcheck=1
+        gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+        enabled=1
+        autorefresh=1
+        type=rpm-md
+      rpm_install:
+        sudo yum install logstash
+    direct_download: https://artifacts.elastic.co/downloads/logstash/logstash-5.2.1.tar.gz
+    logstash_source: https://www.elastic.co/downloads/logstash
+    logstash_run_command: bin/logstash -f logstash.conf
+    logstash_parsing_info: https://www.elastic.co/guide/en/logstash/current/advanced-pipeline.html
 
   kibana:
     source: https://download.elastic.co/kibana/kibana/kibana-4.4.2-linux-x64.tar.gz

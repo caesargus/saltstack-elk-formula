@@ -36,6 +36,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     minion_config.vm.box = "ubuntu/trusty64"
     minion_config.vm.host_name = 'saltminion1.local'
     minion_config.vm.network "private_network", ip: "192.168.50.11"
+    # Look on port 5601 for the kibana interface
 
     minion_config.vm.provision :salt do |salt|
       salt.minion_config = "saltstack/etc/minion1"
